@@ -19,6 +19,14 @@ public abstract class Discount {
     abstract int calculateDiscount(Customer customer);
 
     protected boolean isDiscountValidFor(Customer customer) {
+        if(customer.getType() != discountFor){
+            System.out.println("Customer type does not match discount type");
+            return false;
+        }else if(customer.getAmount() <= lowRangeBillAmount){
+            System.out.println("customer bill amount is lesser than lower range of discount");
+            return false;
+        }
+
         return true;
     }
 }

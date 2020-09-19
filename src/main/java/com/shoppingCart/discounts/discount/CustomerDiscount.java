@@ -11,6 +11,7 @@ public class CustomerDiscount extends Discount {
 
     public int calculateDiscount(Customer customer) {
         isDiscountValidFor(customer);
+
         return 0;
     }
 

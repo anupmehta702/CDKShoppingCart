@@ -8,4 +8,12 @@ public class Customer {
         this.type = type;
         this.amount = amount;
     }
+
+    public CustomerType getType() {
+        return type;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
 }
