@@ -9,3 +9,8 @@ This would mean Discounts would have list of Discount.
 Then I thought it should have it's own interface and later we can club with Discount
 I thought it can be abstract as well which will help us define the minimum parameters
  <br /> Question is what to choose between abstract and interface.
+ 
+ 
+ Open question - 
+ 1. isDiscountValidFor should be called by default .
+ 

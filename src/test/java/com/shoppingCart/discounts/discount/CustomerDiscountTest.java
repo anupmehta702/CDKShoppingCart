@@ -15,14 +15,27 @@ public class CustomerDiscountTest {
 
     @Test
     public void testCalculateDiscountWithinRange() {
-        Customer customer = new Customer(PREMIUM, 1500);
+        Customer customer = new Customer(PREMIUM, 1600);
+        assertEquals(60, customerDiscount.calculateDiscount(customer));
+    }
+
+    @Test
+    public void testCalculateDiscountForAmountMoreThanRange() {
+        Customer customer = new Customer(PREMIUM, 2600);
         assertEquals(100, customerDiscount.calculateDiscount(customer));
     }
 
     @Test
-    public void testCalculateDiscountOutsideRange() {
+    public void testCalculateDiscountLessThanLowerRange() {
         CustomerDiscount customerDiscount = new CustomerDiscount(1000, 4000, 10, PREMIUM);
         Customer customer = new Customer(PREMIUM, 500);
+        assertEquals(0, customerDiscount.calculateDiscount(customer));
+    }
+
+    @Test
+    public void testCalculateDiscountForAmountEqualToZero() {
+        CustomerDiscount customerDiscount = new CustomerDiscount(1000, 4000, 10, PREMIUM);
+        Customer customer = new Customer(PREMIUM, 0);
         assertEquals(0, customerDiscount.calculateDiscount(customer));
     }
 
@@ -33,20 +46,22 @@ public class CustomerDiscountTest {
     }
 
     @Test
-    public void isDiscountValidForTestForCustomerType() {
+    public void isDiscountValidForTestForValidCustomerType() {
         Customer customer = new Customer(REGULAR, 500);
         assertFalse(customerDiscount.isDiscountValidFor(customer));
+         customer = new Customer(PREMIUM, 2500);
+        assertTrue(customerDiscount.isDiscountValidFor(customer));
     }
 
     @Test
     public void isDiscountValidForTestForAmountLessThanLowerRange() {
-        Customer customer = new Customer(REGULAR, 500);
+        Customer customer = new Customer(PREMIUM, 500);
         assertFalse(customerDiscount.isDiscountValidFor(customer));
     }
 
     @Test
     public void isDiscountValidForTestForAmountValidRange() {
-        Customer customer = new Customer(REGULAR, 1500);
+        Customer customer = new Customer(PREMIUM, 1500);
         assertTrue(customerDiscount.isDiscountValidFor(customer));
     }
 
