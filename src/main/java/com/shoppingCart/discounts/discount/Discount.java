@@ -3,6 +3,8 @@ package com.shoppingCart.discounts.discount;
 import com.shoppingCart.customer.Customer;
 import com.shoppingCart.customer.CustomerType;
 
+import java.util.Objects;
+
 public abstract class Discount {
     int lowRangeBillAmount = 0;
     int highRangeBillAmount = 0;
@@ -28,5 +30,21 @@ public abstract class Discount {
         }
 
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Discount discount = (Discount) o;
+        return lowRangeBillAmount == discount.lowRangeBillAmount &&
+                highRangeBillAmount == discount.highRangeBillAmount &&
+                discountPercentage == discount.discountPercentage &&
+                discountFor == discount.discountFor;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lowRangeBillAmount, highRangeBillAmount, discountPercentage, discountFor);
     }
 }
