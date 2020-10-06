@@ -10,6 +10,7 @@ Then I thought it should have it's own interface and later we can club with Disc
 I thought it can be abstract as well which will help us define the minimum parameters
  <br /> Question is what to choose between abstract and interface.
 3. After third commit I now feel we dont need abstract class or interface . 
+4. Wrote seperate methods to add discounts in Discount ,later refactored 
  
  Open question - 
  1. isDiscountValidFor should be called by default .

@@ -18,7 +18,23 @@ public abstract class Discount {
         this.discountFor = discountFor;
     }
 
-    abstract int calculateDiscount(Customer customer);
+    public int getLowRangeBillAmount() {
+        return lowRangeBillAmount;
+    }
+
+    public void setLowRangeBillAmount(int lowRangeBillAmount) {
+        this.lowRangeBillAmount = lowRangeBillAmount;
+    }
+
+    public int getHighRangeBillAmount() {
+        return highRangeBillAmount;
+    }
+
+    public void setHighRangeBillAmount(int highRangeBillAmount) {
+        this.highRangeBillAmount = highRangeBillAmount;
+    }
+
+    abstract public int calculateDiscount(Customer customer);
 
     protected boolean isDiscountValidFor(Customer customer) {
         if(customer.getType() != discountFor){
@@ -46,5 +62,15 @@ public abstract class Discount {
     @Override
     public int hashCode() {
         return Objects.hash(lowRangeBillAmount, highRangeBillAmount, discountPercentage, discountFor);
+    }
+
+    @Override
+    public String toString() {
+        return "Discount{" +
+                "lowRangeBillAmount=" + lowRangeBillAmount +
+                ", highRangeBillAmount=" + highRangeBillAmount +
+                ", discountPercentage=" + discountPercentage +
+                ", discountFor=" + discountFor +
+                '}';
     }
 }
