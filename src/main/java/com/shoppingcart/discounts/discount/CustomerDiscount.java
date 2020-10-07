@@ -1,7 +1,7 @@
-package com.shoppingCart.discounts.discount;
+package com.shoppingcart.discounts.discount;
 
-import com.shoppingCart.customer.Customer;
-import com.shoppingCart.customer.CustomerType;
+import com.shoppingcart.customer.Customer;
+import com.shoppingcart.customer.CustomerType;
 
 public class CustomerDiscount extends Discount {
 

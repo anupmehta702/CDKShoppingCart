@@ -1,4 +1,4 @@
-package com.shoppingCart.customer;
+package com.shoppingcart.customer;
 
 public enum CustomerType {
     REGULAR,

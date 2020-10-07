@@ -14,4 +14,4 @@ I thought it can be abstract as well which will help us define the minimum param
  
  Open question - 
  1. isDiscountValidFor should be called by default .
- 
+ 2. Make Map as EnumMap in Discounts

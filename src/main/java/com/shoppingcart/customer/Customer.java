@@ -1,4 +1,4 @@
-package com.shoppingCart.customer;
+package com.shoppingcart.customer;
 
 public class Customer {
     CustomerType type;

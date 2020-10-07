@@ -1,17 +1,17 @@
-package com.shoppingCart.discounts.discount;
+package com.shoppingcart.discounts.discount;
 
-import com.shoppingCart.customer.Customer;
-import com.shoppingCart.customer.CustomerType;
+import com.shoppingcart.customer.Customer;
+import com.shoppingcart.customer.CustomerType;
 
 import java.util.Objects;
 
 public abstract class Discount {
-    int lowRangeBillAmount = 0;
-    int highRangeBillAmount = 0;
-    int discountPercentage = 0;
-    public CustomerType discountFor;
+    int lowRangeBillAmount;
+    int highRangeBillAmount;
+    int discountPercentage;
+    CustomerType discountFor;
 
-    public Discount(int lowRangeBillAmount, int highRangeBillAmount, int discountPercentage,CustomerType discountFor) {
+    public Discount(int lowRangeBillAmount, int highRangeBillAmount, int discountPercentage, CustomerType discountFor) {
         this.lowRangeBillAmount = lowRangeBillAmount;
         this.highRangeBillAmount = highRangeBillAmount;
         this.discountPercentage = discountPercentage;
@@ -22,25 +22,21 @@ public abstract class Discount {
         return lowRangeBillAmount;
     }
 
-    public void setLowRangeBillAmount(int lowRangeBillAmount) {
-        this.lowRangeBillAmount = lowRangeBillAmount;
-    }
-
     public int getHighRangeBillAmount() {
         return highRangeBillAmount;
     }
 
-    public void setHighRangeBillAmount(int highRangeBillAmount) {
-        this.highRangeBillAmount = highRangeBillAmount;
+    public CustomerType getDiscountFor() {
+        return discountFor;
     }
 
-    abstract public int calculateDiscount(Customer customer);
+    public abstract int calculateDiscount(Customer customer);
 
     protected boolean isDiscountValidFor(Customer customer) {
-        if(customer.getType() != discountFor){
+        if (customer.getType() != discountFor) {
             System.out.println("Customer type does not match discount type");
             return false;
-        }else if(customer.getAmount() <= lowRangeBillAmount){
+        } else if (customer.getAmount() <= lowRangeBillAmount) {
             System.out.println("customer bill amount is lesser than lower range of discount");
             return false;
         }

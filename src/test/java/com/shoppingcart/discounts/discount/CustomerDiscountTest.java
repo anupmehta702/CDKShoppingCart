@@ -1,10 +1,10 @@
-package com.shoppingCart.discounts.discount;
+package com.shoppingcart.discounts.discount;
 
-import com.shoppingCart.customer.Customer;
+import com.shoppingcart.customer.Customer;
 import org.junit.Test;
 
-import static com.shoppingCart.customer.CustomerType.PREMIUM;
-import static com.shoppingCart.customer.CustomerType.REGULAR;
+import static com.shoppingcart.customer.CustomerType.PREMIUM;
+import static com.shoppingcart.customer.CustomerType.REGULAR;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
