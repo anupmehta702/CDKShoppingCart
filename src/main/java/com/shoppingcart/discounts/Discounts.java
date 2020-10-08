@@ -3,6 +3,8 @@ package com.shoppingcart.discounts;
 import com.shoppingcart.customer.Customer;
 import com.shoppingcart.customer.CustomerType;
 import com.shoppingcart.discounts.discount.Discount;
+import com.shoppingcart.discounts.exception.AddDiscountException;
+import com.shoppingcart.discounts.exception.InvalidDiscountRangeException;
 import com.shoppingcart.discounts.exception.OverlappingDiscountAddedException;
 
 import java.util.ArrayList;
@@ -18,13 +20,22 @@ class Discounts {
         return new HashMap<>(customerTypeDiscountMap);
     }
 
-    boolean addDiscount(Discount discountToAdd) throws OverlappingDiscountAddedException {
-        //TODO add validations for high and low range
+    boolean addDiscount(Discount discountToAdd) throws AddDiscountException {
+        validateDiscountForRange(discountToAdd);
         if (isDiscountRangeAlreadyPresent(discountToAdd)) {
             throw new OverlappingDiscountAddedException("Discount to add already overlaps existing discount - " + discountToAdd);
         }
         addDiscountFor(discountToAdd);
         return true;
+    }
+
+    private void validateDiscountForRange(Discount discountToAdd) throws InvalidDiscountRangeException {
+        if(discountToAdd.getLowRangeBillAmount() < 0 || discountToAdd.getHighRangeBillAmount() < 0){
+            throw new InvalidDiscountRangeException("Low or high range of Discount cannot be <= ZERO");
+        }
+        if(discountToAdd.getLowRangeBillAmount() >= discountToAdd.getHighRangeBillAmount()){
+            throw new InvalidDiscountRangeException("Low range cannot be >= to high range of Discount");
+        }
     }
 
     private void addDiscountFor(Discount discountToAdd) {
