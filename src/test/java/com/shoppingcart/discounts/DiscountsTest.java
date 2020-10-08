@@ -54,16 +54,12 @@ public class DiscountsTest {
         assertThrows(OverlappingDiscountAddedException.class, () -> discounts.addDiscount(premiumDiscount));
     }
 
-    /*@Test
-    public void addDiscountTest_ForRangeIncludingExistingDiscount_ForSameCustomerType() throws OverlappingDiscountAddedException {
+    @Test
+    public void addDiscountTest_ForExistingDiscountRangeSubsetOfDiscountToAdd_ForSameCustomerType() throws OverlappingDiscountAddedException {
         discounts.addDiscount(customDiscount);
-        CustomerDiscount premiumDiscount = new CustomerDiscount(500, 2500, 20, PREMIUM);
+        CustomerDiscount premiumDiscount = new CustomerDiscount(950, 2050, 20, PREMIUM);
         assertThrows(OverlappingDiscountAddedException.class, () -> discounts.addDiscount(premiumDiscount));
-    }*/
-
-    /* TODO - Add test cases for  950-2050
-    corner cases 100 - 1000 ,2000-3000
-    */
+    }
 
     @Test
     public void calculateTotalDiscountTest() throws OverlappingDiscountAddedException {

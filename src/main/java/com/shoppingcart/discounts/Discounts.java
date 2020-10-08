@@ -19,6 +19,7 @@ class Discounts {
     }
 
     boolean addDiscount(Discount discountToAdd) throws OverlappingDiscountAddedException {
+        //TODO add validations for high and low range
         if (isDiscountRangeAlreadyPresent(discountToAdd)) {
             throw new OverlappingDiscountAddedException("Discount to add already overlaps existing discount - " + discountToAdd);
         }
@@ -45,8 +46,9 @@ class Discounts {
             List<Discount> customerTypeDiscounts = customerTypeDiscountMap.get(discountToAdd.getDiscountFor());
             List<Discount> isRangePresentList = customerTypeDiscounts
                     .stream()
-                    .filter(existingDiscount -> (isLowerRangeWithinExistingDiscountRange(existingDiscount, discountToAdd.getLowRangeBillAmount()) ||
-                            isHigherRangeWithinExistingDiscountRange(existingDiscount, discountToAdd.getHighRangeBillAmount()))
+                    .filter(existingDiscount -> (
+                            isDiscountToAddRangeWithinExistingDiscountRange(existingDiscount,discountToAdd)) ||
+                            isExistingDiscountRangeSubsetOfDiscountToAddRange(existingDiscount,discountToAdd)
                     )
                     .collect(Collectors.toList());
             return !isRangePresentList.isEmpty();
@@ -54,23 +56,19 @@ class Discounts {
 
     }
 
-    private boolean isHigherRangeWithinExistingDiscountRange(Discount existingDiscount, int highRangeBillAmount) {
+    private boolean isExistingDiscountRangeSubsetOfDiscountToAddRange(Discount existingDiscount,Discount discountToAdd){
+        return discountToAdd.getLowRangeBillAmount() < existingDiscount.getLowRangeBillAmount() &&
+                existingDiscount.getHighRangeBillAmount() < discountToAdd.getHighRangeBillAmount();
+    }
+
+    private boolean isDiscountToAddRangeWithinExistingDiscountRange(Discount existingDiscount,Discount discountToAdd){
+        return isRangeWithinExistingDiscountRange(existingDiscount,discountToAdd.getLowRangeBillAmount())
+                || isRangeWithinExistingDiscountRange(existingDiscount,discountToAdd.getHighRangeBillAmount());
+    }
+    private boolean isRangeWithinExistingDiscountRange(Discount existingDiscount, int highRangeBillAmount) {
         return existingDiscount.getLowRangeBillAmount() < highRangeBillAmount
                 && highRangeBillAmount < existingDiscount.getHighRangeBillAmount();
     }
-
-    private boolean isLowerRangeWithinExistingDiscountRange(Discount existingDiscount, int lowRangeBillAmount) {
-        return existingDiscount.getLowRangeBillAmount() < lowRangeBillAmount
-                && lowRangeBillAmount < existingDiscount.getHighRangeBillAmount();
-    }
-
-   /* public void checkIfDiscountIsInRange(Discount existingDiscount, Discount discountToAdd) throws OverlappingDiscountAddedException {
-        if ((existingDiscount.getLowRangeBillAmount() <= discountToAdd.getLowRangeBillAmount()) &&
-                discountToAdd.getLowRangeBillAmount() <= existingDiscount.getHighRangeBillAmount()) {
-            throw new OverlappingDiscountAddedException("Discount to add already overlaps existing discount - " + existingDiscount);
-        }
-
-    }*/
 
     int calculateTotalDiscount(Customer customer) {
         List<Discount> discounts = customerTypeDiscountMap.get(customer.getType());
