@@ -1,5 +1,6 @@
 import com.shoppingcart.BillCounter;
 import com.shoppingcart.customer.Customer;
+import com.shoppingcart.customer.CustomerType;
 import com.shoppingcart.discounts.CustomerDiscount;
 import com.shoppingcart.discounts.Discounts;
 import com.shoppingcart.discounts.exception.AddDiscountException;
@@ -14,11 +15,20 @@ public class Application {
     public static void main(String[] args) throws AddDiscountException {
         BillCounter billCounter = new BillCounter(getDiscounts());
 
-        Customer regularCustomer = new Customer(REGULAR, 15000);
-        System.out.println("Total bill  -->" + billCounter.calculateBill(regularCustomer));
+        getBillFor(REGULAR, 5000, billCounter);
+        getBillFor(REGULAR, 10000, billCounter);
+        getBillFor(REGULAR, 15000, billCounter);
 
-        Customer premiumCustomer = new Customer(PREMIUM, 15800);
-        System.out.println("Total bill -->" + billCounter.calculateBill(premiumCustomer));
+        getBillFor(PREMIUM, 4000, billCounter);
+        getBillFor(PREMIUM, 8000, billCounter);
+        getBillFor(PREMIUM, 12000, billCounter);
+        getBillFor(PREMIUM, 20000, billCounter);
+
+    }
+
+    private static void getBillFor(CustomerType customerType, int amount, BillCounter billCounter) {
+        Customer customCustomer = new Customer(customerType, amount);
+        System.out.println("Total bill for  - " + customCustomer + " is --> " + billCounter.calculateBill(customCustomer));
     }
 
     private static Discounts getDiscounts() throws AddDiscountException {
