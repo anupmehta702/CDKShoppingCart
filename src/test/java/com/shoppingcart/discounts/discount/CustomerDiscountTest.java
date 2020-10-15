@@ -1,6 +1,7 @@
 package com.shoppingcart.discounts.discount;
 
 import com.shoppingcart.customer.Customer;
+import com.shoppingcart.discounts.CustomerDiscount;
 import org.junit.Test;
 
 import static com.shoppingcart.customer.CustomerType.PREMIUM;

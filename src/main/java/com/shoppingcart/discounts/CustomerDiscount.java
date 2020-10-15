@@ -1,4 +1,4 @@
-package com.shoppingcart.discounts.discount;
+package com.shoppingcart.discounts;
 
 import com.shoppingcart.customer.Customer;
 import com.shoppingcart.customer.CustomerType;
@@ -7,10 +7,10 @@ import java.util.Objects;
 
 public class CustomerDiscount  {
 
-    int lowRangeBillAmount;
-    int highRangeBillAmount;
-    int discountPercentage;
-    CustomerType discountFor;
+    private int lowRangeBillAmount;
+    private int highRangeBillAmount;
+    private int discountPercentage;
+    private CustomerType discountFor;
 
     public CustomerDiscount(int lowRangeBillAmount, int highRangeBillAmount, int discountPercentage, CustomerType discountFor) {
         this.lowRangeBillAmount = lowRangeBillAmount;
@@ -41,7 +41,7 @@ public class CustomerDiscount  {
 
     }
 
-    protected boolean isDiscountValidFor(Customer customer) {
+    public boolean isDiscountValidFor(Customer customer) {
         if (customer.getType() != discountFor) {
             System.out.println("Customer type does not match discount type");
             return false;

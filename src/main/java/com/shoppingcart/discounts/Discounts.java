@@ -2,7 +2,6 @@ package com.shoppingcart.discounts;
 
 import com.shoppingcart.customer.Customer;
 import com.shoppingcart.customer.CustomerType;
-import com.shoppingcart.discounts.discount.CustomerDiscount;
 import com.shoppingcart.discounts.exception.AddDiscountException;
 import com.shoppingcart.discounts.exception.InvalidDiscountRangeException;
 import com.shoppingcart.discounts.exception.OverlappingDiscountAddedException;
@@ -13,14 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-class Discounts {
+public class Discounts {
     private final Map<CustomerType, List<CustomerDiscount>> customerTypeDiscountMap = new HashMap<>();
 
     public Map<CustomerType, List<CustomerDiscount>> getExistingDiscounts() {
         return new HashMap<>(customerTypeDiscountMap);
     }
 
-    boolean addDiscount(CustomerDiscount discountToAdd) throws AddDiscountException {
+    public boolean addDiscount(CustomerDiscount discountToAdd) throws AddDiscountException {
         validateDiscountForRange(discountToAdd);
         if (isDiscountRangeAlreadyPresent(discountToAdd)) {
             throw new OverlappingDiscountAddedException("Discount to add already overlaps existing discount - " + discountToAdd);
@@ -82,7 +81,7 @@ class Discounts {
                 && highRangeBillAmount < existingDiscount.getHighRangeBillAmount();
     }
 
-    int calculateTotalDiscount(Customer customer) {
+    public int calculateTotalDiscount(Customer customer) {
         List<CustomerDiscount> discounts = customerTypeDiscountMap.get(customer.getType());
         int totalDiscount = 0;
         if (!discounts.isEmpty()) {

@@ -1,7 +1,6 @@
 package com.shoppingcart.discounts;
 
 import com.shoppingcart.customer.Customer;
-import com.shoppingcart.discounts.discount.CustomerDiscount;
 import com.shoppingcart.discounts.exception.AddDiscountException;
 import com.shoppingcart.discounts.exception.InvalidDiscountRangeException;
 import com.shoppingcart.discounts.exception.OverlappingDiscountAddedException;
