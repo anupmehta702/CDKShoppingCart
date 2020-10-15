@@ -14,10 +14,13 @@ public class Application {
 
     public static void main(String[] args) throws AddDiscountException {
         BillCounter billCounter = new BillCounter(getDiscounts());
+        billCounter.printCurrentDiscountDetails();
 
         getBillFor(REGULAR, 5000, billCounter);
         getBillFor(REGULAR, 10000, billCounter);
         getBillFor(REGULAR, 15000, billCounter);
+
+        System.out.println();
 
         getBillFor(PREMIUM, 4000, billCounter);
         getBillFor(PREMIUM, 8000, billCounter);

@@ -51,6 +51,22 @@ public class CustomerDiscount  {
         return true;
     }
 
+    public boolean isRangeWithin(CustomerDiscount existingDiscount){
+       return  isRangeWithinExistingDiscount(existingDiscount, lowRangeBillAmount)
+                || isRangeWithinExistingDiscount(existingDiscount, highRangeBillAmount);
+    }
+
+    private boolean isRangeWithinExistingDiscount(CustomerDiscount existingDiscount, int customRangeAmount) {
+        return existingDiscount.getLowRangeBillAmount() < customRangeAmount
+                && customRangeAmount < existingDiscount.getHighRangeBillAmount();
+    }
+
+    public boolean isRangeSubsetOf(CustomerDiscount existingDiscount) {
+        return lowRangeBillAmount < existingDiscount.getLowRangeBillAmount() &&
+                existingDiscount.getHighRangeBillAmount() < highRangeBillAmount;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

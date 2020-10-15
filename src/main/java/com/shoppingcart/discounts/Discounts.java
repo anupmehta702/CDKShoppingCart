@@ -56,9 +56,9 @@ public class Discounts {
             List<CustomerDiscount> customerTypeDiscounts = customerTypeDiscountMap.get(discountToAdd.getDiscountFor());
             List<CustomerDiscount> isRangePresentList = customerTypeDiscounts
                     .stream()
-                    .filter(existingDiscount -> (
-                            isDiscountToAddRangeWithinExistingDiscountRange(existingDiscount, discountToAdd)) ||
-                            isExistingDiscountRangeSubsetOfDiscountToAddRange(existingDiscount, discountToAdd)
+                    .filter(existingDiscount ->
+                            discountToAdd.isRangeWithin(existingDiscount) ||
+                                    discountToAdd.isRangeSubsetOf(existingDiscount)
                     )
                     .collect(Collectors.toList());
             return !isRangePresentList.isEmpty();
@@ -66,20 +66,6 @@ public class Discounts {
 
     }
 
-    private boolean isExistingDiscountRangeSubsetOfDiscountToAddRange(CustomerDiscount existingDiscount, CustomerDiscount discountToAdd) {
-        return discountToAdd.getLowRangeBillAmount() < existingDiscount.getLowRangeBillAmount() &&
-                existingDiscount.getHighRangeBillAmount() < discountToAdd.getHighRangeBillAmount();
-    }
-
-    private boolean isDiscountToAddRangeWithinExistingDiscountRange(CustomerDiscount existingDiscount, CustomerDiscount discountToAdd) {
-        return isRangeWithinExistingDiscountRange(existingDiscount, discountToAdd.getLowRangeBillAmount())
-                || isRangeWithinExistingDiscountRange(existingDiscount, discountToAdd.getHighRangeBillAmount());
-    }
-
-    private boolean isRangeWithinExistingDiscountRange(CustomerDiscount existingDiscount, int highRangeBillAmount) {
-        return existingDiscount.getLowRangeBillAmount() < highRangeBillAmount
-                && highRangeBillAmount < existingDiscount.getHighRangeBillAmount();
-    }
 
     public int calculateTotalDiscount(Customer customer) {
         List<CustomerDiscount> discounts = customerTypeDiscountMap.get(customer.getType());
@@ -92,4 +78,10 @@ public class Discounts {
         return totalDiscount;
     }
 
+    @Override
+    public String toString() {
+        return "Discounts{" +
+                "customerTypeDiscountMap=" + customerTypeDiscountMap +
+                '}';
+    }
 }
