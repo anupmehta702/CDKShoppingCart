@@ -2,7 +2,6 @@ package com.shoppingcart.discounts;
 
 import com.shoppingcart.customer.Customer;
 import com.shoppingcart.discounts.discount.CustomerDiscount;
-import com.shoppingcart.discounts.discount.Discount;
 import com.shoppingcart.discounts.exception.AddDiscountException;
 import com.shoppingcart.discounts.exception.InvalidDiscountRangeException;
 import com.shoppingcart.discounts.exception.OverlappingDiscountAddedException;
@@ -16,7 +15,7 @@ import static org.junit.Assert.assertThrows;
 
 public class DiscountsTest {
     private final Discounts discounts = new Discounts();
-    private final Discount customDiscount = new CustomerDiscount(1000, 2000, 10, PREMIUM);
+    private final CustomerDiscount customDiscount = new CustomerDiscount(1000, 2000, 10, PREMIUM);
 
     @Test
     public void addDiscountTest() throws AddDiscountException {
@@ -27,18 +26,18 @@ public class DiscountsTest {
 
 
     @Test
-    public void addDiscountTest_ValidationForRange() throws AddDiscountException {
-        Discount customDiscount = new CustomerDiscount(2000, 1000, 10, PREMIUM);
+    public void addDiscountTest_ValidationForRange()  {
+        CustomerDiscount customDiscount = new CustomerDiscount(2000, 1000, 10, PREMIUM);
         AddDiscountException ex = assertThrows(InvalidDiscountRangeException.class, () -> discounts.addDiscount(customDiscount));
-        assertEquals("Low range cannot be >= to high range of Discount",ex.getMessage());
+        assertEquals("Low range cannot be >= to high range of Discount", ex.getMessage());
 
     }
 
     @Test
-    public void addDiscountTest_ValidationForNegativeRange() throws AddDiscountException {
-        Discount customDiscount = new CustomerDiscount(-2000, 1000, 10, PREMIUM);
+    public void addDiscountTest_ValidationForNegativeRange()  {
+        CustomerDiscount customDiscount = new CustomerDiscount(-2000, 1000, 10, PREMIUM);
         AddDiscountException ex = assertThrows(InvalidDiscountRangeException.class, () -> discounts.addDiscount(customDiscount));
-        assertEquals("Low or high range of Discount cannot be <= ZERO",ex.getMessage());
+        assertEquals("Low or high range of Discount cannot be <= ZERO", ex.getMessage());
     }
 
     @Test

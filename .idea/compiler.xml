@@ -9,8 +9,5 @@
         <module name="CDKShoppingCart" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="CDKShoppingCart" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

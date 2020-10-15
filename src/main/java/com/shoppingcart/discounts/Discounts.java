@@ -2,7 +2,7 @@ package com.shoppingcart.discounts;
 
 import com.shoppingcart.customer.Customer;
 import com.shoppingcart.customer.CustomerType;
-import com.shoppingcart.discounts.discount.Discount;
+import com.shoppingcart.discounts.discount.CustomerDiscount;
 import com.shoppingcart.discounts.exception.AddDiscountException;
 import com.shoppingcart.discounts.exception.InvalidDiscountRangeException;
 import com.shoppingcart.discounts.exception.OverlappingDiscountAddedException;
@@ -14,13 +14,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 class Discounts {
-    private final Map<CustomerType, List<Discount>> customerTypeDiscountMap = new HashMap<>();
+    private final Map<CustomerType, List<CustomerDiscount>> customerTypeDiscountMap = new HashMap<>();
 
-    public Map<CustomerType, List<Discount>> getExistingDiscounts() {
+    public Map<CustomerType, List<CustomerDiscount>> getExistingDiscounts() {
         return new HashMap<>(customerTypeDiscountMap);
     }
 
-    boolean addDiscount(Discount discountToAdd) throws AddDiscountException {
+    boolean addDiscount(CustomerDiscount discountToAdd) throws AddDiscountException {
         validateDiscountForRange(discountToAdd);
         if (isDiscountRangeAlreadyPresent(discountToAdd)) {
             throw new OverlappingDiscountAddedException("Discount to add already overlaps existing discount - " + discountToAdd);
@@ -29,37 +29,37 @@ class Discounts {
         return true;
     }
 
-    private void validateDiscountForRange(Discount discountToAdd) throws InvalidDiscountRangeException {
-        if(discountToAdd.getLowRangeBillAmount() < 0 || discountToAdd.getHighRangeBillAmount() < 0){
+    private void validateDiscountForRange(CustomerDiscount discountToAdd) throws InvalidDiscountRangeException {
+        if (discountToAdd.getLowRangeBillAmount() < 0 || discountToAdd.getHighRangeBillAmount() < 0) {
             throw new InvalidDiscountRangeException("Low or high range of Discount cannot be <= ZERO");
         }
-        if(discountToAdd.getLowRangeBillAmount() >= discountToAdd.getHighRangeBillAmount()){
+        if (discountToAdd.getLowRangeBillAmount() >= discountToAdd.getHighRangeBillAmount()) {
             throw new InvalidDiscountRangeException("Low range cannot be >= to high range of Discount");
         }
     }
 
-    private void addDiscountFor(Discount discountToAdd) {
+    private void addDiscountFor(CustomerDiscount discountToAdd) {
 
         if (customerTypeDiscountMap.containsKey(discountToAdd.getDiscountFor())) {
-            List<Discount> premiumDiscount = customerTypeDiscountMap.get(discountToAdd.getDiscountFor());
+            List<CustomerDiscount> premiumDiscount = customerTypeDiscountMap.get(discountToAdd.getDiscountFor());
             premiumDiscount.add(discountToAdd);
         } else {
-            List<Discount> customerTypeDiscounts = new ArrayList<>();
+            List<CustomerDiscount> customerTypeDiscounts = new ArrayList<>();
             customerTypeDiscounts.add(discountToAdd);
             customerTypeDiscountMap.put(discountToAdd.getDiscountFor(), customerTypeDiscounts);
         }
     }
 
-    private boolean isDiscountRangeAlreadyPresent(Discount discountToAdd) {
+    private boolean isDiscountRangeAlreadyPresent(CustomerDiscount discountToAdd) {
         if (customerTypeDiscountMap.isEmpty() || !customerTypeDiscountMap.containsKey(discountToAdd.getDiscountFor())) {
             return false;
         } else {
-            List<Discount> customerTypeDiscounts = customerTypeDiscountMap.get(discountToAdd.getDiscountFor());
-            List<Discount> isRangePresentList = customerTypeDiscounts
+            List<CustomerDiscount> customerTypeDiscounts = customerTypeDiscountMap.get(discountToAdd.getDiscountFor());
+            List<CustomerDiscount> isRangePresentList = customerTypeDiscounts
                     .stream()
                     .filter(existingDiscount -> (
-                            isDiscountToAddRangeWithinExistingDiscountRange(existingDiscount,discountToAdd)) ||
-                            isExistingDiscountRangeSubsetOfDiscountToAddRange(existingDiscount,discountToAdd)
+                            isDiscountToAddRangeWithinExistingDiscountRange(existingDiscount, discountToAdd)) ||
+                            isExistingDiscountRangeSubsetOfDiscountToAddRange(existingDiscount, discountToAdd)
                     )
                     .collect(Collectors.toList());
             return !isRangePresentList.isEmpty();
@@ -67,25 +67,26 @@ class Discounts {
 
     }
 
-    private boolean isExistingDiscountRangeSubsetOfDiscountToAddRange(Discount existingDiscount,Discount discountToAdd){
+    private boolean isExistingDiscountRangeSubsetOfDiscountToAddRange(CustomerDiscount existingDiscount, CustomerDiscount discountToAdd) {
         return discountToAdd.getLowRangeBillAmount() < existingDiscount.getLowRangeBillAmount() &&
                 existingDiscount.getHighRangeBillAmount() < discountToAdd.getHighRangeBillAmount();
     }
 
-    private boolean isDiscountToAddRangeWithinExistingDiscountRange(Discount existingDiscount,Discount discountToAdd){
-        return isRangeWithinExistingDiscountRange(existingDiscount,discountToAdd.getLowRangeBillAmount())
-                || isRangeWithinExistingDiscountRange(existingDiscount,discountToAdd.getHighRangeBillAmount());
+    private boolean isDiscountToAddRangeWithinExistingDiscountRange(CustomerDiscount existingDiscount, CustomerDiscount discountToAdd) {
+        return isRangeWithinExistingDiscountRange(existingDiscount, discountToAdd.getLowRangeBillAmount())
+                || isRangeWithinExistingDiscountRange(existingDiscount, discountToAdd.getHighRangeBillAmount());
     }
-    private boolean isRangeWithinExistingDiscountRange(Discount existingDiscount, int highRangeBillAmount) {
+
+    private boolean isRangeWithinExistingDiscountRange(CustomerDiscount existingDiscount, int highRangeBillAmount) {
         return existingDiscount.getLowRangeBillAmount() < highRangeBillAmount
                 && highRangeBillAmount < existingDiscount.getHighRangeBillAmount();
     }
 
     int calculateTotalDiscount(Customer customer) {
-        List<Discount> discounts = customerTypeDiscountMap.get(customer.getType());
+        List<CustomerDiscount> discounts = customerTypeDiscountMap.get(customer.getType());
         int totalDiscount = 0;
         if (!discounts.isEmpty()) {
-            for (Discount discount : discounts) {
+            for (CustomerDiscount discount : discounts) {
                 totalDiscount = totalDiscount + discount.calculateDiscount(customer);
             }
         }
