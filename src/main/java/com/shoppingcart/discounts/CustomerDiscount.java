@@ -44,11 +44,8 @@ public class CustomerDiscount  {
     public boolean isDiscountValidFor(Customer customer) {
         if (customer.getType() != discountFor) {
             return false;
-        } else if (customer.getAmount() <= lowRangeBillAmount) {
-            return false;
-        }
+        } else return customer.getAmount() > lowRangeBillAmount;
 
-        return true;
     }
 
     public boolean isRangeWithin(CustomerDiscount existingDiscount){
@@ -61,7 +58,7 @@ public class CustomerDiscount  {
                 && customRangeAmount < existingDiscount.getHighRangeBillAmount();
     }
 
-    public boolean isRangeSubsetOf(CustomerDiscount existingDiscount) {
+    public boolean isRangeSuperSetOf(CustomerDiscount existingDiscount) {
         return lowRangeBillAmount < existingDiscount.getLowRangeBillAmount() &&
                 existingDiscount.getHighRangeBillAmount() < highRangeBillAmount;
     }
@@ -85,7 +82,7 @@ public class CustomerDiscount  {
 
     @Override
     public String toString() {
-        return "Discount{" +
+        return "CustomerDiscount{" +
                 "lowRangeBillAmount=" + lowRangeBillAmount +
                 ", highRangeBillAmount=" + highRangeBillAmount +
                 ", discountPercentage=" + discountPercentage +

@@ -58,7 +58,7 @@ public class Discounts {
                     .stream()
                     .filter(existingDiscount ->
                             discountToAdd.isRangeWithin(existingDiscount) ||
-                                    discountToAdd.isRangeSubsetOf(existingDiscount)
+                                    discountToAdd.isRangeSuperSetOf(existingDiscount)
                     )
                     .collect(Collectors.toList());
             return !isRangePresentList.isEmpty();

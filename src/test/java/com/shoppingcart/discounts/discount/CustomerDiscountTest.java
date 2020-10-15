@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static com.shoppingcart.customer.CustomerType.PREMIUM;
 import static com.shoppingcart.customer.CustomerType.REGULAR;
+import static java.lang.Integer.MAX_VALUE;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -67,8 +68,32 @@ public class CustomerDiscountTest {
     }
 
     @Test
-    public void testToString() {
-        CustomerDiscount customerDiscount = new CustomerDiscount(0, 1000, 10, PREMIUM);
-        assertEquals("CustomerDiscount{lowRangeBillAmount=0, highRangeBillAmount=1000, discountPercentage=10, discountFor=PREMIUM}", customerDiscount.toString());
+    public void isRangeWithinTest(){
+        CustomerDiscount lowRangeExistingDiscount = new CustomerDiscount(0,1000,10,PREMIUM);
+        assertFalse(customerDiscount.isRangeWithin(lowRangeExistingDiscount));
+
+
+        CustomerDiscount highRangeExistingDiscount = new CustomerDiscount(2000,3000,10,PREMIUM);
+        assertFalse(customerDiscount.isRangeWithin(highRangeExistingDiscount));
+
+        CustomerDiscount highRangeWithinExistingDiscount = new CustomerDiscount(500,1500,10,PREMIUM);
+        assertTrue(customerDiscount.isRangeWithin(highRangeWithinExistingDiscount));
+
+        CustomerDiscount lowRangeWithinExistingDiscount = new CustomerDiscount(1500,2500,10,PREMIUM);
+        assertTrue(customerDiscount.isRangeWithin(lowRangeWithinExistingDiscount));
     }
+
+    @Test
+    public void isRangeSubsetOfTest(){
+        CustomerDiscount nonSubsetExistingDiscount = new CustomerDiscount(2000, MAX_VALUE,10,PREMIUM);
+        assertFalse("Existing discount is not subset of customer discount",customerDiscount.isRangeSuperSetOf(nonSubsetExistingDiscount));
+
+        CustomerDiscount equalRangeExistingSubsetDiscount = new CustomerDiscount(2000,3000,10,PREMIUM);
+        assertFalse("Existing discount has same range as customer discount",customerDiscount.isRangeSuperSetOf(equalRangeExistingSubsetDiscount));
+
+        CustomerDiscount subsetExistingDiscount = new CustomerDiscount(1500,1600,10,PREMIUM);
+        assertTrue("Existing discount is a subset of customer discount",customerDiscount.isRangeSuperSetOf(subsetExistingDiscount));
+
+    }
+
 }
