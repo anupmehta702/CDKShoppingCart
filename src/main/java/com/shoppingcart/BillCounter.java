@@ -16,11 +16,16 @@ public class BillCounter {
     }
 
     public void printCurrentDiscountDetails() {
+        System.out.println("-- Existing Discounts --");
+        System.out.println();
         Map<CustomerType, List<CustomerDiscount>> discountMap = discounts.getExistingDiscounts();
         discountMap.forEach((key, value) -> {
             System.out.println("Discounts for " + key);
             System.out.println(value);
+            System.out.println();
         });
+        System.out.println("------------------------");
+
     }
 
         public int calculateBill (Customer customer){
